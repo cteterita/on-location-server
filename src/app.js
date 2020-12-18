@@ -24,6 +24,7 @@ app.use((error, req, res, next) => {
   if (NODE_ENV === 'production') {
     response = { error: { message: 'server error' } };
   } else {
+    // TODO: implement an error monitoring services
     console.error(error);
     response = { message: error.message, error };
   }
