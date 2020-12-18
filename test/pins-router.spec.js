@@ -49,7 +49,6 @@ describe('/pins', () => {
       .insert(examplePins);
   });
 
-
   afterEach(() => db('pins').truncate());
 
   after(() => db.destroy());
@@ -84,22 +83,30 @@ describe('/pins', () => {
     it('responds to a valid request with the body content', () => {
       const body = {
         title: 'Joy Luck Club',
-        type: 'book',
-        lat: 37.7790262,
-        lon: -122.4199061,
+        media_type: 'book',
+        lat: 37.77902000,
+        lon: -122.41990000,
         link: 'https://www.goodreads.com/book/show/7763.The_Joy_Luck_Club',
+      };
+      const expectedBody = {
+        title: 'Joy Luck Club',
+        media_type: 'book',
+        lat: '37.77902',
+        lon: '-122.41990',
+        link: 'https://www.goodreads.com/book/show/7763.The_Joy_Luck_Club',
+        id: 1,
       };
       return supertest(app)
         .post('/pins')
         .send(body)
-        .expect(200, body);
+        .expect(200, expectedBody);
     });
 
     it('rejects a request without a title', () => {
       const body = {
-        type: 'book',
-        lat: 37.7790262,
-        lon: -122.4199061,
+        media_type: 'book',
+        lat: '37.7790262',
+        lon: '-122.4199061',
         link: 'https://www.goodreads.com/book/show/7763.The_Joy_Luck_Club',
       };
       return supertest(app)
@@ -111,22 +118,22 @@ describe('/pins', () => {
     it('rejects a request with an invalid type', () => {
       const body = {
         title: 'Joy Luck Club',
-        type: 'video game',
-        lat: 37.7790262,
-        lon: -122.4199061,
+        media_type: 'video game',
+        lat: '37.7790262',
+        lon: '-122.4199061',
         link: 'https://www.goodreads.com/book/show/7763.The_Joy_Luck_Club',
       };
       return supertest(app)
         .post('/pins')
         .send(body)
-        .expect(400, 'Invalid data: type (of "movie", "book", or "tv") is required');
+        .expect(400, 'Invalid data: media_type (of "movie", "book", or "tv") is required');
     });
 
     it('rejects a request with invalid coordinates', () => {
       const body = {
         title: 'Joy Luck Club',
-        type: 'book',
-        lat: 37.7790262,
+        media_type: 'book',
+        lat: '37.7790262',
         lon: 'hello',
         link: 'https://www.goodreads.com/book/show/7763.The_Joy_Luck_Club',
       };
@@ -139,9 +146,9 @@ describe('/pins', () => {
     it('rejects a request with out-of-bound coordinates', () => {
       const body = {
         title: 'Joy Luck Club',
-        type: 'book',
-        lat: 37.7790262,
-        lon: -182.4199061,
+        media_type: 'book',
+        lat: '37.7790262',
+        lon: '-182.4199061',
         link: 'https://www.goodreads.com/book/show/7763.The_Joy_Luck_Club',
       };
       return supertest(app)
@@ -153,9 +160,9 @@ describe('/pins', () => {
     it('rejects a request with an invalid URL', () => {
       const body = {
         title: 'Joy Luck Club',
-        type: 'book',
-        lat: 37.7790262,
-        lon: -182.4199061,
+        media_type: 'book',
+        lat: '37.7790262',
+        lon: '-182.4199061',
         link: 'www.goodreads.com/book/show/7763.The_Joy_Luck_Club',
       };
       return supertest(app)
@@ -167,17 +174,18 @@ describe('/pins', () => {
     it('POST /pins sanitizes content on return', () => {
       const body = {
         title: 'Joy Luck Club <script>',
-        type: 'book',
-        lat: 37.7790262,
-        lon: -122.4199061,
+        media_type: 'book',
+        lat: '37.77902',
+        lon: '-122.41990',
         link: 'https://www.goodreads.com/book/show/7763.The_Joy_Luck_Club?q=<script>',
       };
       const expectedBody = {
         title: 'Joy Luck Club &lt;script&gt;',
-        type: 'book',
-        lat: 37.7790262,
-        lon: -122.4199061,
+        media_type: 'book',
+        lat: '37.77902',
+        lon: '-122.41990',
         link: 'https://www.goodreads.com/book/show/7763.The_Joy_Luck_Club?q=%3Cscript%3E',
+        id: 1,
       };
       return supertest(app)
         .post('/pins')

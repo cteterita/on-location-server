@@ -6,15 +6,16 @@ const pinsService = require('./pins-service');
 const pinsRouter = express.Router();
 const bodyParser = express.json();
 
-const validTypes = ['movie', 'book', 'tv'];
+const validTypes = ['movie', 'book', 'tv_show', 'tv_episode'];
 
 function serializePin(pin) {
   return {
     title: xss(pin.title),
-    type: pin.type,
+    media_type: pin.media_type,
     link: xss(pin.link),
     lat: pin.lat,
     lon: pin.lon,
+    id: pin.id,
   };
 }
 
@@ -45,16 +46,17 @@ pinsRouter
       return res.status(400).send('Invalid request: eastern boundary must be greater than western boundary');
     }
     pinsService.getByMapBounds(knex, n, s, e, w)
-      .then((results) => res.send(results));
+      .then((results) => res.send(results.map((p) => serializePin(p))));
+    return false;
   })
   .post(bodyParser, bodyParser, (req, res) => {
-    const { title, type } = req.body;
+    const { title, media_type } = req.body;
     let { link, lat, lon } = req.body;
     if (!title) {
       return res.status(400).send('Invalid data: title is required');
     }
-    if (!type || !validTypes.includes(type)) {
-      return res.status(400).send('Invalid data: type (of "movie", "book", or "tv") is required');
+    if (!media_type || !validTypes.includes(media_type)) {
+      return res.status(400).send('Invalid data: media_type (of "movie", "book", or "tv") is required');
     }
     if (!link) {
       return res.status(400).send('Invalid data: link is required');
@@ -74,13 +76,14 @@ pinsRouter
     }
     const pin = {
       title,
-      type,
+      media_type,
       link,
       lat,
       lon,
     };
-    // TODO: implement saving item
-    return res.send(serializePin(pin));
+    pinsService.insertPin(knex, pin)
+      .then((newPin) => res.send(serializePin(newPin)));
+    return false;
   });
 
 module.exports = pinsRouter;
