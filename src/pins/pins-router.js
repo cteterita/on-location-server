@@ -1,6 +1,8 @@
 const express = require('express');
 const xss = require('xss');
 
+const pinsService = require('./pins-service');
+
 const pinsRouter = express.Router();
 const bodyParser = express.json();
 
@@ -16,8 +18,14 @@ function serializePin(pin) {
   };
 }
 
+let knex;
+
 pinsRouter
   .route('/pins')
+  .all((req, res, next) => {
+    knex = req.app.get('db');
+    next();
+  })
   .get((req, res) => {
     let { ne, sw } = req.query;
     if (!ne || !sw) {
@@ -36,8 +44,8 @@ pinsRouter
     if (e < w) {
       return res.status(400).send('Invalid request: eastern boundary must be greater than western boundary');
     }
-    // TODO: implement search
-    return res.send('Hello, pins!');
+    pinsService.getByMapBounds(knex, n, s, e, w)
+      .then((results) => res.send(results));
   })
   .post(bodyParser, bodyParser, (req, res) => {
     const { title, type } = req.body;

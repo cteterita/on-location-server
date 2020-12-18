@@ -30,7 +30,7 @@ const examplePins = [
   },
 ];
 
-describe.only('pinsService object', () => {
+describe('pinsService object', () => {
   let db;
 
   before(() => {
