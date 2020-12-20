@@ -4,6 +4,10 @@
         "supertest": true,
         "expect": true,
         "describe": true,
-        "it": true
+        "it": true,
+        "before": true,
+        "beforeEach": true,
+        "after": true,
+        "afterEach": true
     }
 }
