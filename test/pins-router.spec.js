@@ -6,7 +6,7 @@ const app = require('../src/app');
 const examplePins = [
   {
     title: 'The Joy Luck Club',
-    media_type: 'book',
+    media: 'book',
     lat: '37.77902',
     lon: '-122.41990',
     link: 'https://www.goodreads.com/book/show/7763.The_Joy_Luck_Club',
@@ -14,7 +14,7 @@ const examplePins = [
   },
   {
     title: 'The Wild Parrots of Telegraph Hill',
-    media_type: 'book',
+    media: 'book',
     lat: '37.80078',
     lon: '-122.40409',
     link: 'https://www.goodreads.com/book/show/221682.The_Wild_Parrots_of_Telegraph_Hill?ac=1&from_search=true&qid=ygucMo2g7U&rank=1',
@@ -22,7 +22,7 @@ const examplePins = [
   },
   {
     title: 'The Rock',
-    media_type: 'movie',
+    media: 'movie',
     lat: '37.82672',
     lon: '-122.42275',
     link: 'https://www.imdb.com/title/tt0117500/',
@@ -55,8 +55,6 @@ describe('/pins', () => {
 
   describe('GET /pins', () => {
     it('responds with 200 containing pins within its bounds', () => {
-      examplePins[0].media = 'book';
-      delete examplePins[0].media_type;
       return supertest(app)
         .get('/pins?ne=[37.8,-122.4]&sw=[37.7, -122.6]')
         .expect(200, examplePins.slice(0, 1));

@@ -11,7 +11,7 @@ const validTypes = ['movie', 'book', 'tv_show', 'tv_episode'];
 function serializePin(pin) {
   return {
     title: xss(pin.title),
-    media: pin.media_type,
+    media: pin.media,
     link: xss(pin.link),
     lat: pin.lat,
     lon: pin.lon,
@@ -76,7 +76,7 @@ pinsRouter
     }
     const pin = {
       title,
-      media_type: media,
+      media,
       link,
       lat,
       lon,

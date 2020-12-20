@@ -1,1 +1,2 @@
 DROP TABLE IF EXISTS pins;
+DROP TYPE IF EXISTS media_types;

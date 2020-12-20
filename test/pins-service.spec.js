@@ -6,7 +6,7 @@ const pinsService = require('../src/pins/pins-service.js');
 const examplePins = [
   {
     title: 'The Joy Luck Club',
-    media_type: 'book',
+    media: 'book',
     lat: '37.77902',
     lon: '-122.41990',
     link: 'https://www.goodreads.com/book/show/7763.The_Joy_Luck_Club',
@@ -14,7 +14,7 @@ const examplePins = [
   },
   {
     title: 'The Wild Parrots of Telegraph Hill',
-    media_type: 'book',
+    media: 'book',
     lat: '37.80078',
     lon: '-122.40409',
     link: 'https://www.goodreads.com/book/show/221682.The_Wild_Parrots_of_Telegraph_Hill?ac=1&from_search=true&qid=ygucMo2g7U&rank=1',
@@ -22,7 +22,7 @@ const examplePins = [
   },
   {
     title: 'The Rock',
-    media_type: 'movie',
+    media: 'movie',
     lat: '37.82672',
     lon: '-122.42275',
     link: 'https://www.imdb.com/title/tt0117500/',
@@ -65,7 +65,7 @@ describe('pinsService object', () => {
   it('insertPin()', () => {
     const newPin = {
       title: 'Full House',
-      media_type: 'tv_show',
+      media: 'tv_show',
       link: 'https://www.imdb.com/title/tt0092359/',
       lat: '37.77619',
       lon: '-122.43275',
@@ -74,7 +74,7 @@ describe('pinsService object', () => {
       .then((actual) => {
         expect(actual).to.eql({
           title: 'Full House',
-          media_type: 'tv_show',
+          media: 'tv_show',
           link: 'https://www.imdb.com/title/tt0092359/',
           lat: '37.77619',
           lon: '-122.43275',
