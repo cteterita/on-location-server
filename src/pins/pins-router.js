@@ -11,7 +11,7 @@ const validTypes = ['movie', 'book', 'tv_show', 'tv_episode'];
 function serializePin(pin) {
   return {
     title: xss(pin.title),
-    media_type: pin.media_type,
+    media: pin.media_type,
     link: xss(pin.link),
     lat: pin.lat,
     lon: pin.lon,
@@ -50,13 +50,13 @@ pinsRouter
     return false;
   })
   .post(bodyParser, bodyParser, (req, res) => {
-    const { title, media_type } = req.body;
+    const { title, media } = req.body;
     let { link, lat, lon } = req.body;
     if (!title) {
       return res.status(400).send('Invalid data: title is required');
     }
-    if (!media_type || !validTypes.includes(media_type)) {
-      return res.status(400).send('Invalid data: media_type (of "movie", "book", or "tv") is required');
+    if (!media || !validTypes.includes(media)) {
+      return res.status(400).send('Invalid data: media (of "movie", "book", or "tv") is required');
     }
     if (!link) {
       return res.status(400).send('Invalid data: link is required');
@@ -76,7 +76,7 @@ pinsRouter
     }
     const pin = {
       title,
-      media_type,
+      media_type: media,
       link,
       lat,
       lon,
