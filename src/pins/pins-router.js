@@ -13,8 +13,8 @@ function serializePin(pin) {
     title: xss(pin.title),
     media: pin.media,
     link: xss(pin.link),
-    lat: pin.lat,
-    lon: pin.lon,
+    lat: parseFloat(pin.lat),
+    lon: parseFloat(pin.lon),
     id: pin.id,
   };
 }
@@ -49,14 +49,14 @@ pinsRouter
       .then((results) => res.send(results.map((p) => serializePin(p))));
     return false;
   })
-  .post(bodyParser, bodyParser, (req, res) => {
+  .post(bodyParser, (req, res) => {
     const { title, media } = req.body;
     let { link, lat, lon } = req.body;
     if (!title) {
       return res.status(400).send('Invalid data: title is required');
     }
     if (!media || !validTypes.includes(media)) {
-      return res.status(400).send('Invalid data: media (of "movie", "book", or "tv") is required');
+      return res.status(400).send('Invalid data: media (of "movie", "book", "tv_show", or "tv_episode") is required');
     }
     if (!link) {
       return res.status(400).send('Invalid data: link is required');

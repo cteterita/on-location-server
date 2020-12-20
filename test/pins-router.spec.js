@@ -7,24 +7,24 @@ const examplePins = [
   {
     title: 'The Joy Luck Club',
     media: 'book',
-    lat: '37.77902',
-    lon: '-122.41990',
+    lat: 37.77902,
+    lon: -122.41990,
     link: 'https://www.goodreads.com/book/show/7763.The_Joy_Luck_Club',
     id: 1,
   },
   {
     title: 'The Wild Parrots of Telegraph Hill',
     media: 'book',
-    lat: '37.80078',
-    lon: '-122.40409',
+    lat: 37.80078,
+    lon: -122.40409,
     link: 'https://www.goodreads.com/book/show/221682.The_Wild_Parrots_of_Telegraph_Hill?ac=1&from_search=true&qid=ygucMo2g7U&rank=1',
     id: 2,
   },
   {
     title: 'The Rock',
     media: 'movie',
-    lat: '37.82672',
-    lon: '-122.42275',
+    lat: 37.82672,
+    lon: -122.42275,
     link: 'https://www.imdb.com/title/tt0117500/',
     id: 3,
   },
@@ -91,8 +91,8 @@ describe('/pins', () => {
       const expectedBody = {
         title: 'Joy Luck Club',
         media: 'book',
-        lat: '37.77902',
-        lon: '-122.41990',
+        lat: 37.77902,
+        lon: -122.41990,
         link: 'https://www.goodreads.com/book/show/7763.The_Joy_Luck_Club',
         id: 1,
       };
@@ -105,8 +105,8 @@ describe('/pins', () => {
     it('rejects a request without a title', () => {
       const body = {
         media: 'book',
-        lat: '37.7790262',
-        lon: '-122.4199061',
+        lat: 37.7790262,
+        lon: -122.4199061,
         link: 'https://www.goodreads.com/book/show/7763.The_Joy_Luck_Club',
       };
       return supertest(app)
@@ -119,21 +119,21 @@ describe('/pins', () => {
       const body = {
         title: 'Joy Luck Club',
         media: 'video game',
-        lat: '37.7790262',
-        lon: '-122.4199061',
+        lat: 37.7790262,
+        lon: -122.4199061,
         link: 'https://www.goodreads.com/book/show/7763.The_Joy_Luck_Club',
       };
       return supertest(app)
         .post('/pins')
         .send(body)
-        .expect(400, 'Invalid data: media (of "movie", "book", or "tv") is required');
+        .expect(400, 'Invalid data: media (of "movie", "book", "tv_show", or "tv_episode") is required');
     });
 
     it('rejects a request with invalid coordinates', () => {
       const body = {
         title: 'Joy Luck Club',
         media: 'book',
-        lat: '37.7790262',
+        lat: 37.7790262,
         lon: 'hello',
         link: 'https://www.goodreads.com/book/show/7763.The_Joy_Luck_Club',
       };
@@ -147,8 +147,8 @@ describe('/pins', () => {
       const body = {
         title: 'Joy Luck Club',
         media: 'book',
-        lat: '37.7790262',
-        lon: '-182.4199061',
+        lat: 37.7790262,
+        lon: -182.4199061,
         link: 'https://www.goodreads.com/book/show/7763.The_Joy_Luck_Club',
       };
       return supertest(app)
@@ -161,8 +161,8 @@ describe('/pins', () => {
       const body = {
         title: 'Joy Luck Club',
         media: 'book',
-        lat: '37.7790262',
-        lon: '-182.4199061',
+        lat: 37.7790262,
+        lon: -182.4199061,
         link: 'www.goodreads.com/book/show/7763.The_Joy_Luck_Club',
       };
       return supertest(app)
@@ -175,15 +175,15 @@ describe('/pins', () => {
       const body = {
         title: 'Joy Luck Club <script>',
         media: 'book',
-        lat: '37.77902',
-        lon: '-122.41990',
+        lat: 37.77902,
+        lon: -122.41990,
         link: 'https://www.goodreads.com/book/show/7763.The_Joy_Luck_Club?q=<script>',
       };
       const expectedBody = {
         title: 'Joy Luck Club &lt;script&gt;',
         media: 'book',
-        lat: '37.77902',
-        lon: '-122.41990',
+        lat: 37.77902,
+        lon: -122.41990,
         link: 'https://www.goodreads.com/book/show/7763.The_Joy_Luck_Club?q=%3Cscript%3E',
         id: 1,
       };
