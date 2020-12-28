@@ -25,7 +25,7 @@ Pins are fetched using the northeast and southwest corners of the current map co
 ```js
 // req.query
 {
-  "ne": String // format: `lat,lon`
+  "ne": String, // format: `lat,lon`
   "sw": String // format: `lat,lon`
 }
 
@@ -39,7 +39,7 @@ Pins are fetched using the northeast and southwest corners of the current map co
     "title": String,
     "link": String, // must be valid URL
     "lat": Float, // latitude of location
-    "lon": Float, // longitude of location
+    "lon": Float // longitude of location
   },
   ...
 ]
